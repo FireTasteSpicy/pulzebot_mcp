@@ -1,0 +1,667 @@
+/* Standup report page styles - duplicates moved to pulze-shared.css */
+.card-header-flex { display: flex; align-items: center; justify-content: space-between; }
+
+/* Ensure our main sections are visible when active */
+#reportsSection.show.active,
+#blockersSection.show.active {
+    display: block !important;
+}
+
+/* Tab Content Header - Distinct styling for individual tab headers */
+.tab-content-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #dee2e6;
+    padding: 0.75rem 1.25rem;
+    margin: 0;
+    position: relative;
+}
+
+.tab-content-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+}
+
+.tab-content-header h4 {
+    font-weight: 600;
+    margin: 0;
+}
+
+.tab-content-header .text-danger {
+    color: #dc3545 !important;
+}
+
+.tab-content-header .text-success {
+    color: #28a745 !important;
+}
+
+.tab-content-header .text-primary {
+    color: #007bff !important;
+}
+.clickable-row { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+.standup-item-resolved { background-color: #f8f9fa; }
+.card-scrollable { max-height: 520px; overflow: auto; }
+.timestamp-width { min-width: 120px; }
+.hidden-section { display: none; }
+.empty-state { padding: 2rem; text-align: center; }
+.empty-state-icon { margin: 0 auto; color: #6b7280; }
+
+/* AI Content Styling - Extracted from inline styles */
+.ai-content h2 {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.ai-content h3 {
+    font-size: 1rem;
+    color: #34495e;
+    margin-top: 0.8rem;
+    margin-bottom: 0.4rem;
+}
+
+.ai-content ul {
+    padding-left: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.ai-content li {
+    margin-bottom: 0.3rem;
+}
+
+/* AI Analysis Styling */
+.ai-analysis-header {
+    border-bottom: 2px solid #e3f2fd;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.ai-analysis-content {
+    background: #ffffff;
+    border: 1px solid #e8f4fd;
+    border-radius: 12px;
+    padding: 0;
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+}
+
+.ai-analysis-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.ai-content-formatted {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    padding: 1.5rem;
+}
+
+.ai-content-formatted h1,
+.ai-content-formatted h2,
+.ai-content-formatted h3,
+.ai-content-formatted h4 {
+    color: #2c3e50;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.ai-content-formatted h1:first-child,
+.ai-content-formatted h2:first-child,
+.ai-content-formatted h3:first-child,
+.ai-content-formatted h4:first-child {
+    margin-top: 0;
+}
+
+.ai-content-formatted h1::before,
+.ai-content-formatted h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 60%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+}
+
+.ai-content-formatted h3::before,
+.ai-content-formatted h4::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #667eea;
+    font-size: 0.7em;
+}
+
+.ai-content-formatted h1 { 
+    font-size: 1.2rem; 
+    color: #1a237e;
+    background: linear-gradient(135deg, #f8f9ff 0%, #e8f4fd 100%);
+    padding: 1rem 1rem 1rem 1.5rem;
+    margin: 0 -1.5rem 1.5rem -1.5rem;
+    border-bottom: 1px solid #e3f2fd;
+}
+
+.ai-content-formatted h2 { 
+    font-size: 1.1rem; 
+    color: #283593;
+    margin-top: 2rem;
+}
+
+.ai-content-formatted h3 { 
+    font-size: 1rem; 
+    color: #3949ab;
+    margin-top: 1.5rem;
+}
+
+.ai-content-formatted h4 { 
+    font-size: 0.95rem; 
+    color: #5c6bc0;
+}
+
+.ai-content-formatted ul {
+    margin: 1rem 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.ai-content-formatted li {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+    position: relative;
+    padding: 0.8rem 1rem 0.8rem 3rem;
+    background: #f8faff;
+    border-radius: 8px;
+    border-left: 4px solid #e3f2fd;
+    transition: all 0.2s ease;
+}
+
+.ai-content-formatted li:hover {
+    background: #f0f7ff;
+    border-left-color: #667eea;
+    transform: translateX(2px);
+}
+
+.ai-content-formatted li::before {
+    content: '●';
+    position: absolute;
+    left: 1rem;
+    top: 0.9rem;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.ai-content-formatted li strong {
+    color: #1a237e;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.ai-content-formatted strong {
+    color: #2980b9;
+    font-weight: 600;
+}
+
+.ai-content-formatted p {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.ai-content-formatted blockquote {
+    border-left: 4px solid #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+    position: relative;
+    font-style: italic;
+}
+
+.ai-content-formatted blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 3rem;
+    color: #667eea;
+    opacity: 0.3;
+}
+
+.ai-analysis-empty {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+/* Section dividers and spacing */
+.ai-content-formatted > *:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+
+.ai-content-formatted h1 + *,
+.ai-content-formatted h2 + *,
+.ai-content-formatted h3 + *,
+.ai-content-formatted h4 + * {
+    margin-top: 0.5rem;
+}
+
+/* Major section breaks */
+.ai-content-formatted h2 {
+    position: relative;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+}
+
+.ai-content-formatted h2:not(:first-child)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -1.5rem;
+    right: -1.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #e3f2fd 20%, #e3f2fd 80%, transparent 100%);
+}
+
+/* Hide unwanted headers and sections */
+.ai-content-formatted h1:first-child,
+.ai-content-formatted h1[title*="Strategic Team"],
+.ai-content-formatted h2[title*="Strategic Team"],
+.ai-content-formatted h3[title*="Strategic Team"],
+.ai-content-formatted h4[title*="Strategic Team"] {
+    display: none !important;
+}
+
+/* Hide Strategic Metadata sections */
+.ai-content-formatted h1:has(+ pre),
+.ai-content-formatted h2:has(+ pre),
+.ai-content-formatted h3:has(+ pre),
+.ai-content-formatted h4:has(+ pre) {
+    display: none !important;
+}
+
+/* Hide JSON metadata blocks */
+.ai-content-formatted pre:contains("team_sentiment"),
+.ai-content-formatted code:contains("team_sentiment") {
+    display: none !important;
+}
+
+/* Additional cleanup patterns */
+.ai-content-formatted *[data-cleanup="hide"] {
+    display: none !important;
+}
+
+/* Table styling if any tables are present */
+.ai-content-formatted table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.ai-content-formatted th,
+.ai-content-formatted td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e8f4fd;
+}
+
+.ai-content-formatted th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+}
+
+.ai-content-formatted tr:hover {
+    background: #f8faff;
+}
+
+/* Icons for different content types */
+.ai-content-formatted h2:contains("Individual")::before,
+.ai-content-formatted h2:contains("Performance")::before {
+    content: '👤 ';
+}
+
+.ai-content-formatted h2:contains("Team")::before,
+.ai-content-formatted h2:contains("Strategic")::before {
+    content: '🎯 ';
+}
+
+.ai-content-formatted h2:contains("Blocker")::before,
+.ai-content-formatted h2:contains("Risk")::before {
+    content: '🚧 ';
+}
+
+.ai-content-formatted h2:contains("Health")::before,
+.ai-content-formatted h2:contains("Metrics")::before {
+    content: '📈 ';
+}
+
+.ai-content-formatted h2:contains("Recommendation")::before {
+    content: '💡 ';
+}
+
+/* Metadata box styling */
+.ai-content-formatted pre:contains("{") {
+    background: linear-gradient(135deg, #263238 0%, #37474f 100%);
+    color: #b0bec5;
+    border: none;
+    font-size: 0.8rem;
+    position: relative;
+}
+
+.ai-content-formatted pre:contains("{")::before {
+    content: 'Strategic Metadata';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    background: #667eea;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 4px 0 4px 0;
+    font-weight: 600;
+}
+
+/* Full width card improvements */
+.card.border-start.border-4.border-primary {
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.border-start.border-4.border-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+}
+
+/* Essential bullet point styling for all screen sizes */
+.ai-content-formatted .bullet-point {
+    margin-bottom: 0.8rem;
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    background: #f8faff;
+    border-radius: 6px;
+    border-left: 3px solid #667eea;
+    position: relative;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #495057;
+    break-inside: avoid;
+    display: block;
+}
+
+.ai-content-formatted .bullet-point::before {
+    content: '●';
+    position: absolute;
+    left: 1rem;
+    top: 0.7rem;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.ai-content-formatted .bullet-point strong {
+    color: #1a237e;
+    font-weight: 700;
+    display: inline;
+    margin-bottom: 0.3rem;
+}
+
+/* Sub-bullet points for all screen sizes */
+.ai-content-formatted .sub-bullet-point {
+    margin-bottom: 0.5rem;
+    margin-left: 1.5rem;
+    padding: 0.4rem 0.8rem 0.4rem 2rem;
+    background: #ffffff;
+    border-radius: 4px;
+    border-left: 2px solid #e8f4fd;
+    font-size: 0.85rem;
+    position: relative;
+    display: block;
+}
+
+.ai-content-formatted .sub-bullet-point::before {
+    content: '◦';
+    position: absolute;
+    left: 0.6rem;
+    top: 0.5rem;
+    color: #94a3b8;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767px) {
+    .ai-analysis-content {
+        padding: 1rem;
+    }
+    
+    .ai-content-formatted .bullet-point {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem 0.5rem 2rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .ai-content-formatted .bullet-point::before {
+        left: 0.8rem;
+        top: 0.6rem;
+        font-size: 0.9em;
+    }
+    
+    .ai-content-formatted .sub-bullet-point {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem 0.3rem 1.8rem;
+        margin-left: 1rem;
+    }
+    
+    .ai-content-formatted .sub-bullet-point::before {
+        left: 0.5rem;
+        top: 0.4rem;
+    }
+}
+
+/* Responsive adjustments for full width cards */
+@media (min-width: 768px) {
+    .ai-analysis-content {
+        padding: 2rem;
+    }
+    
+    .ai-content-formatted {
+        font-size: 0.95rem;
+    }
+    
+    .ai-content-formatted .bullet-point {
+        font-size: 0.95rem;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .ai-content-formatted {
+        column-count: 2;
+        column-gap: 2.5rem;
+        column-rule: 1px solid #e3f2fd;
+        column-fill: balance;
+    }
+    
+    .ai-content-formatted h2,
+    .ai-content-formatted h3,
+    .ai-content-formatted h4 {
+        break-inside: avoid;
+        break-after: avoid;
+    }
+    
+    /* Force Strategic Blocker Analysis to start new column */
+    .ai-content-formatted .blocker-analysis-break {
+        break-before: column;
+        margin-top: 0 !important;
+        padding-top: 0;
+    }
+    
+    /* Ensure everything after blocker analysis stays in right column */
+    .ai-content-formatted .blocker-analysis-break ~ * {
+        break-before: avoid;
+    }
+    
+    .ai-content-formatted ul {
+        break-inside: avoid;
+        margin-bottom: 1rem;
+    }
+    
+    .ai-content-formatted li {
+        break-inside: avoid;
+        margin-bottom: 0.6rem;
+    }
+    
+    /* Large screen specific bullet point adjustments */
+    .ai-content-formatted .bullet-point {
+        margin-bottom: 0.6rem;
+    }
+    
+    /* Strategic Recommendations section styling */
+    .ai-content-formatted .recommendations-section {
+        margin-top: 1rem;
+    }
+    
+    .ai-content-formatted .recommendations-section h5 {
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .ai-content-formatted .recommendations-section .bullet-point {
+        background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+        border-left: 4px solid #4caf50;
+        margin-bottom: 0.4rem;
+    }
+    
+    .ai-content-formatted .recommendations-section .bullet-point::before {
+        content: '💡';
+        color: #4caf50;
+        font-size: 1rem;
+    }
+    
+    .ai-content-formatted .recommendations-section .bullet-point strong {
+        color: #1a237e;
+        display: inline;
+        margin-right: 0.5rem;
+    }
+    
+    .ai-content-formatted .recommendations-section .sub-bullet-point {
+        background: #ffffff;
+        border-left: 3px solid #81c784;
+        margin-top: 0.3rem;
+    }
+    
+    /* Better column balancing */
+    .ai-content-formatted p,
+    .ai-content-formatted ul,
+    .ai-content-formatted blockquote {
+        orphans: 2;
+        widows: 2;
+    }
+}
+
+/* Special content highlighting */
+.ai-content-formatted pre,
+.ai-content-formatted code {
+    background: linear-gradient(135deg, #f1f3f4 0%, #e8eaf6 100%);
+    border: 1px solid #e0e7ff;
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    font-size: 0.85rem;
+    color: #2c3e50;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+}
+
+.ai-content-formatted code {
+    padding: 0.2rem 0.5rem;
+    display: inline;
+    margin: 0;
+    color: #e91e63;
+    font-weight: 600;
+}
+
+/* Strategic metadata highlighting */
+.ai-content-formatted em {
+    color: #7b1fa2;
+    font-style: italic;
+    font-weight: 600;
+    background: rgba(123, 31, 162, 0.08);
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+}
+
+/* Special list item types */
+.ai-content-formatted li[class*="action"],
+.ai-content-formatted li:contains("Action Item") {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.08) 0%, rgba(129, 199, 132, 0.08) 100%);
+    border-left: 4px solid #4caf50;
+}
+
+.ai-content-formatted li[class*="action"]::before {
+    content: '✓';
+    color: #4caf50;
+}
+
+.ai-content-formatted li[class*="risk"],
+.ai-content-formatted li:contains("Risk") {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.08) 0%, rgba(255, 183, 77, 0.08) 100%);
+    border-left: 4px solid #ff9800;
+}
+
+.ai-content-formatted li[class*="risk"]::before {
+    content: '⚠';
+    color: #ff9800;
+}
+
+/* Strategic insights highlighting */
+.ai-content-formatted li:contains("Strategic") {
+    background: linear-gradient(135deg, rgba(63, 81, 181, 0.08) 0%, rgba(92, 107, 192, 0.08) 100%);
+    border-left: 4px solid #3f51b5;
+}
+
+.ai-content-formatted li:contains("Strategic")::before {
+    content: '🎯';
+}
+
+/* Performance indicators */
+.ai-content-formatted li:contains("Performance") {
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.08) 0%, rgba(186, 104, 200, 0.08) 100%);
+    border-left: 4px solid #9c27b0;
+}
+
+.ai-content-formatted li:contains("Performance")::before {
+    content: '📊';
+}
+
+/* Sentiment analysis special styling */
+.ai-content-formatted li:contains("Sentiment") {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.08) 0%, rgba(100, 181, 246, 0.08) 100%);
+    border-left: 4px solid #2196f3;
+}
+
+.ai-content-formatted li:contains("Sentiment")::before {
+    content: '💭';
+}

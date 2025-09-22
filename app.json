@@ -1,0 +1,68 @@
+{
+  "name": "PulzeBot - AI Standup Assistant",
+  "description": "AI-powered standup meeting facilitation system demonstrating multi-modal AI orchestration",
+  "image": "heroku/python",
+  "repository": "https://github.com/your-username/pulzebot",
+  "keywords": ["python", "django", "ai", "ml", "agile", "standup", "demo"],
+  "success_url": "/dashboard/",
+
+  "env": {
+    "SECRET_KEY": {
+      "description": "Django secret key for security",
+      "generator": "secret"
+    },
+    "DEBUG": {
+      "description": "Debug mode (should be False for production)",
+      "value": "False"
+    },
+    "ALLOWED_HOSTS": {
+      "description": "Comma-separated list of allowed hosts",
+      "value": ".herokuapp.com,localhost,127.0.0.1"
+    },
+    "CSRF_TRUSTED_ORIGINS": {
+      "description": "Comma-separated list of trusted origins for CSRF",
+      "value": "https://*.herokuapp.com"
+    },
+    "GEMINI_API_KEY": {
+      "description": "Google Gemini API key for AI processing (get from Google AI Studio)",
+      "value": "demo-mode-key"
+    },
+    "OPENAI_API_KEY": {
+      "description": "OpenAI API key for Whisper speech-to-text (get from OpenAI platform)",
+      "value": "demo-mode-key"
+    },
+    "DEMO_MODE": {
+      "description": "Enable demo mode with mock data",
+      "value": "True"
+    },
+    "DJANGO_LOG_LEVEL": {
+      "description": "Django logging level",
+      "value": "INFO"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0",
+      "as": "DATABASE"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
+
+
+
+
+
+
+
+

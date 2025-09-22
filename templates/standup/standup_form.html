@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Standup - PulzeBot{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/standup_form.css' %}">
+{% endblock %}
+
+{% block head_js %}
+<!-- Alpine.js Standup Form Component (load before Alpine.js core) -->
+<script src="{% static 'js/standup_form.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="standup-container py-5" x-data="standupFormApp()">
+    <!-- Smart Suggestions Panel -->
+    <div x-show="suggestions.length > 0" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform translate-y-4"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         class="smart-suggestions">
+        <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-lightbulb me-2 fa-lg"></i>
+            <h5 class="mb-0">Smart Suggestions</h5>
+        </div>
+        <div>
+            <template x-for="suggestion in suggestions" :key="suggestion.id">
+                <span class="suggestion-chip" 
+                      @click="applySuggestion(suggestion)"
+                      x-text="suggestion.text"></span>
+            </template>
+        </div>
+    </div>
+
+    <!-- Main Form Card -->
+    <div class="card shadow-lg border-0">
+        <div class="analytics-header">
+            <h1 class="h2 mb-2">
+                <i class="fas fa-users me-3"></i>
+                Daily Standup
+            </h1>
+            <p class="mb-0 opacity-90">Share your progress and stay connected with your team</p>
+        </div>
+        
+        <div class="card-body p-5">
+            <!-- Input Method Selection -->
+            <div class="mb-4" x-show="!submissionResult">
+                <div class="text-center mb-4">
+                    <h5 class="mb-3">How would you like to submit your standup?</h5>
+                    <div class="btn-group text-overflow-protection" role="group">
+                        <input type="radio" class="btn-check" name="inputMethod" id="manual" value="manual" 
+                               x-model="inputMethod" checked>
+                        <label class="btn btn-outline-primary text-truncate" for="manual">
+                            <i class="fas fa-keyboard me-2"></i>Manual Form
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="inputMethod" id="voice" value="voice" 
+                               x-model="inputMethod" x-show="isRecordingSupported">
+                        <label class="btn btn-outline-primary text-truncate" for="voice" x-show="isRecordingSupported">
+                            <i class="fas fa-microphone me-2"></i>Voice Recording
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Recording Section -->
+            <div x-show="inputMethod === 'voice' && !submissionResult" class="mb-4">
+                <div class="card border-info">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-microphone me-2"></i>
+                            Voice Standup Recording
+                        </h6>
+                    </div>
+                    <div class="card-body text-center">
+                        <div x-show="!isRecording && !hasRecording && !isTranscribing && !isProcessingAI">
+                            <p class="text-muted mb-3">
+                                Record your complete standup update. Describe what you accomplished yesterday, 
+                                what you're working on today, and any blockers you're facing.
+                            </p>
+                            <button type="button" class="btn btn-primary btn-lg" @click="startRecording()">
+                                <i class="fas fa-microphone me-2"></i>Start Recording
+                            </button>
+                        </div>
+                        
+                        <div x-show="isRecording">
+                            <div class="recording-visualizer mb-3">
+                                <div class="recording-wave"></div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                <span class="badge bg-danger fs-6">
+                                    <i class="fas fa-circle me-2"></i>
+                                    Recording <span x-text="formatTime(recordingDuration)"></span>
+                                </span>
+                                <button type="button" class="btn btn-success btn-lg" @click="stopRecording()">
+                                    <i class="fas fa-stop me-2"></i>Stop & Process
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div x-show="isTranscribing">
+                            <div class="spinner-border text-primary mb-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="text-muted">Transcribing your audio...</p>
+                        </div>
+                        
+                        <div x-show="isProcessingAI">
+                            <div class="spinner-border text-success mb-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="text-muted">AI is analyzing your standup and filling the form...</p>
+                        </div>
+                        
+                        <div x-show="hasRecording && !isRecording && !isTranscribing && !isProcessingAI">
+                            <audio x-ref="audioPlayer" controls class="mb-3" style="width: 100%;"></audio>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="button" class="btn btn-outline-danger" @click="clearRecording()">
+                                    <i class="fas fa-trash me-2"></i>Clear & Retry
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Form Section -->
+            <form x-show="inputMethod === 'manual'" x-ref="standupForm" @submit.prevent="submitStandup()" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <!-- Sentiment analysis is now performed automatically using BERT AI -->
+
+                <!-- Yesterday's Work -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">
+                        What did you accomplish yesterday?
+                    </label>
+                    <textarea name="yesterday" 
+                              x-model="formData.yesterday"
+                              @input="validateForm(); autoSave(); updateCharCount('yesterday')"
+                              class="form-control"
+                              rows="4" 
+                              placeholder="Describe your accomplishments from yesterday..."
+                              required></textarea>
+                    <div class="d-flex justify-content-between mt-2">
+                        <small class="text-muted">
+                            <span x-text="charCounts.yesterday"></span> / 500 characters
+                        </small>
+                        <small x-show="formData.yesterday.length > 400" class="text-warning">
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            Consider being more concise
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Today's Goals -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">
+                        What will you work on today?
+                    </label>
+                    <textarea name="today" 
+                              x-model="formData.today"
+                              @input="validateForm(); autoSave(); updateCharCount('today')"
+                              class="form-control"
+                              rows="4" 
+                              placeholder="Describe your goals and priorities for today..."
+                              required></textarea>
+                    <div class="d-flex justify-content-between mt-2">
+                        <small class="text-muted">
+                            <span x-text="charCounts.today"></span> / 500 characters
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Blockers -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">
+                        Any blockers or concerns?
+                    </label>
+                    <textarea name="blockers" 
+                              x-model="formData.blockers"
+                              @input="validateForm(); autoSave(); updateCharCount('blockers')"
+                              class="form-control"
+                              rows="3" 
+                              placeholder="Describe any blockers, dependencies, or concerns..."></textarea>
+                    <div class="d-flex justify-content-between mt-2">
+                        <small class="text-muted">
+                            <span x-text="charCounts.blockers"></span> / 300 characters
+                        </small>
+
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-end align-items-center mb-4">
+                    <div class="text-end">
+                        <div x-show="autoSaveStatus" 
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0"
+                             x-transition:enter-end="opacity-100"
+                             class="text-success small mb-2">
+                            <i class="fas fa-check-circle me-1"></i>
+                            <span x-text="autoSaveStatus"></span>
+                        </div>
+                        <button type="submit" 
+                                class="btn btn-lg btn-success"
+                                :disabled="!isFormValid || isSubmitting"
+                                :class="{ 'btn-outline-success': !isFormValid }">
+                            <i class="fas fa-paper-plane me-2"></i>
+                            <span x-show="!isSubmitting">Submit Standup</span>
+                            <span x-show="isSubmitting">
+                                <i class="fas fa-spinner fa-spin me-2"></i>Submitting...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Voice Recording Submit Section -->
+            <div x-show="inputMethod === 'voice' && voiceProcessingCompleted && !submissionResult" class="text-center">
+                <div class="card border-success mb-4">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">
+                            <i class="fas fa-check me-2 text-success"></i>
+                            Voice Recording Processed - Please Review & Edit
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">Your voice recording has been processed and the form populated below. Please review and edit as needed, then submit.</p>
+                        <button type="button" 
+                                class="btn btn-primary"
+                                @click="inputMethod = 'manual'"
+                                x-show="!isSubmitting">
+                            <i class="fas fa-edit me-2"></i>Review & Edit Form
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Review Section for Voice Processing -->
+            <div x-show="inputMethod === 'manual' && voiceProcessingCompleted" class="mb-4">
+                <div class="alert alert-info">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>
+                                <strong>Form populated from voice recording</strong><br>
+                                <small>Please review the information below, make any necessary edits, and submit when ready.</small>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" @click="inputMethod = 'voice'; voiceProcessingCompleted = false; clearRecording();">
+                                <i class="fas fa-microphone me-1"></i>Re-record
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Area -->
+    <div x-show="submissionResult" 
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform translate-y-4"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         class="mt-4">
+        <div class="card border-success">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-check-circle me-2"></i>
+                    Standup Submitted Successfully!
+                </h5>
+            </div>
+            <div class="card-body">
+                <div x-show="submissionResult?.summary" class="mb-3">
+                    <h6>AI-Generated Summary:</h6>
+                    <div class="p-3 bg-light rounded" x-text="submissionResult?.summary || ''"></div>
+                </div>
+                
+                <div x-show="submissionResult?.sentiment !== undefined" class="mb-3">
+                    <h6>Sentiment Analysis:</h6>
+                    <div class="d-flex align-items-center">
+                        <div class="progress flex-grow-1 me-3" style="height: 20px;">
+                            <div class="progress-bar" 
+                                 :class="submissionResult ? getSentimentClass(submissionResult.sentiment) : ''"
+                                 :style="submissionResult ? { width: (submissionResult.sentiment * 20) + '%' } : { width: '0%' }"></div>
+                        </div>
+                        <span class="badge" 
+                              :class="submissionResult ? getSentimentClass(submissionResult.sentiment) : ''"
+                              x-text="submissionResult ? getSentimentLabel(submissionResult.sentiment) : ''"></span>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary" @click="viewDashboard()">
+                        <i class="fas fa-chart-bar me-2"></i>View Dashboard
+                    </button>
+                    <button class="btn btn-outline-secondary" @click="resetForm()">
+                        <i class="fas fa-plus me-2"></i>New Standup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto-save Indicator -->
+    <div class="auto-save-indicator" :class="{ 'show': showAutoSaveIndicator }">
+        <i class="fas fa-save me-2"></i>Changes saved
+    </div>
+</div>
+{% endblock %}

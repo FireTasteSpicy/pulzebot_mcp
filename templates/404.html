@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Page Not Found - PulzeBot{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 bg-light d-flex align-items-center justify-content-center p-4">
+    <div class="container max-w-480">
+        <div class="card rounded-3 shadow-lg text-center">
+            <div class="card-body p-4 p-md-5">
+            <!-- 404 Icon -->
+                <div class="icon-bg-warning rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 w-80">
+                    <i class="fas fa-search text-warning fs-2"></i>
+                </div>
+
+            <!-- Header -->
+                <h1 class="h4 mb-2">Page Not Found</h1>
+                <p class="text-muted mb-4">The page you're looking for doesn't exist or you don't have permission to access it.</p>
+
+            <!-- Actions -->
+                <div class="d-grid gap-2">
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'authentication:login' %}" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login to Continue
+                    </a>
+                {% else %}
+                    <a href="{% url 'authentication:role_redirect' %}" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Go to Dashboard
+                    </a>
+                {% endif %}
+                    <button onclick="history.back()" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Go Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Access Denied - PulzeBot{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-icon-bg { background-color: rgba(220, 53, 69, 0.12); }
+    .min-vh-100 { min-height: 100vh; }
+    .max-w-480 { max-width: 480px; }
+    .rounded-3 { border-radius: 1rem; }
+    .shadow-lg { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); }
+    .fs-2 { font-size: 2rem; }
+    .w-80 { width: 80px; height: 80px; }
+    .btn-wide { width: 100%; }
+    .bg-light-subtle { background-color: #f8f9fa; }
+}</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 bg-light d-flex align-items-center justify-content-center p-4">
+    <div class="container max-w-480">
+        <div class="card shadow-lg text-center rounded-3">
+            <div class="card-body p-4 p-md-5">
+                <div class="error-icon-bg rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4 w-80">
+                    <i class="fas fa-exclamation-triangle text-danger fs-2"></i>
+                </div>
+                <h1 class="h4 mb-2">{{ title|default:"Access Denied" }}</h1>
+                <p class="text-muted mb-4">{{ message|default:"You do not have permission to access this resource." }}</p>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'dashboard:dashboard' %}" class="btn btn-primary btn-wide">
+                        <i class="fas fa-chart-bar me-2"></i>Go to Dashboard
+                    </a>
+                    <button onclick="history.back()" class="btn btn-outline-secondary btn-wide">
+                        <i class="fas fa-arrow-left me-2"></i>Go Back
+                    </button>
+                </div>
+                <div class="mt-4 p-3 bg-light rounded">
+                    <p class="small text-muted mb-0">Need access? Contact your administrator or team lead.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

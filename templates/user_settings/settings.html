@@ -1,0 +1,485 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Settings - PulzeBot{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/user_settings.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 bg-light settings-page">
+
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container py-4 text-center">
+            <h1 class="h4 mb-1">Settings</h1>
+            <p class="mb-3 text-white-50">Manage your privacy preferences and application settings</p>
+            <div>
+                <a href="{% url 'user_settings:export-data' %}" class="btn btn-outline-light">
+                    <i class="fas fa-download"></i> Export My Data
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row g-4">
+            <div class="col-12">
+                <!-- Profile Settings -->
+                <div class="card settings-card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            <i class="fas fa-user text-primary me-2"></i>Profile Information
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.first_name.id_for_label }}" class="form-label">First Name</label>
+                                {{ profile_form.first_name }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ profile_form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                                {{ profile_form.last_name }}
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="{{ profile_form.email.id_for_label }}" class="form-label">Email</label>
+                                {{ profile_form.email }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy & AI Consent -->
+                <div class="card settings-card mb-4">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-shield-alt text-primary me-2"></i>Privacy & AI Consent
+                            </h5>
+                        </div>
+                        <p class="text-muted mb-3">Control how your data is processed and analysed. These settings ensure you maintain control over your information.</p>
+                        
+                        <!-- Privacy Status Summary -->
+                        {% if processing_summary %}
+                        {% endif %}
+                        
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ settings_form.allow_sentiment_analysis }}
+                                    <label class="form-check-label" for="{{ settings_form.allow_sentiment_analysis.id_for_label }}">
+                                        <strong>Sentiment Analysis</strong><br>
+                                        <small class="text-muted">Allow AI to analyse the mood and sentiment of your standup updates</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ settings_form.allow_ai_analysis }}
+                                    <label class="form-check-label" for="{{ settings_form.allow_ai_analysis.id_for_label }}">
+                                        <strong>AI Analysis</strong><br>
+                                        <small class="text-muted">Enable AI-powered insights and summaries of your work</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ settings_form.allow_team_analytics }}
+                                    <label class="form-check-label" for="{{ settings_form.allow_team_analytics.id_for_label }}">
+                                        <strong>Team Analytics</strong><br>
+                                        <small class="text-muted">Include your data in team-wide analytics and insights</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ settings_form.allow_voice_processing }}
+                                    <label class="form-check-label" for="{{ settings_form.allow_voice_processing.id_for_label }}">
+                                        <strong>Voice Processing</strong><br>
+                                        <small class="text-muted">Allow voice input and speech-to-text processing</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ settings_form.allow_external_integrations }}
+                                    <label class="form-check-label" for="{{ settings_form.allow_external_integrations.id_for_label }}">
+                                        <strong>External Integrations</strong><br>
+                                        <small class="text-muted">Connect with GitHub, Jira, and other tools</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="form-check">
+                                    {{ settings_form.anonymous_mode }}
+                                    <label class="form-check-label" for="{{ settings_form.anonymous_mode.id_for_label }}">
+                                        <strong>Anonymous Mode</strong><br>
+                                        <small class="text-muted">Hide identifying information in team analytics</small>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- External Integrations -->
+                <div class="card settings-card mb-4" x-data="integrationSettings()">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            <i class="fas fa-plug text-primary me-2"></i>External Integrations
+                        </h5>
+                        <p class="text-muted mb-4">Configure connections to external platforms for enhanced team insights.</p>
+                        
+                        <!-- Jira Integration -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fab fa-jira fa-2x me-3 text-primary"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">Jira Integration</h6>
+                                    <div class="d-flex align-items-center">
+                                        <span class="status-indicator me-2" :class="jira.status + '-status'"></span>
+                                        <small class="text-muted" x-text="jira.statusText"></small>
+                                    </div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" x-model="jira.enabled" id="jiraEnabled">
+                                    <label class="form-check-label" for="jiraEnabled">Enabled</label>
+                                </div>
+                            </div>
+                            
+                            <div x-show="jira.enabled" class="border rounded p-3 bg-light">
+                                <div class="row g-3">
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Jira Server URL</label>
+                                        <input type="text" class="form-control" x-model="jira.serverUrl" placeholder="company.atlassian.net">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">API Token</label>
+                                        <input type="password" class="form-control" x-model="jira.apiToken" placeholder="Enter API token">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Username/Email</label>
+                                        <input type="email" class="form-control" x-model="jira.username" placeholder="user@company.com">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Default Project Key</label>
+                                        <input type="text" class="form-control" x-model="jira.projectKey" placeholder="PROJ">
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" @click="testJiraConnection()" :disabled="jira.testing">
+                                            <i class="fas fa-vial me-1" :class="{ 'fa-spin': jira.testing }"></i>
+                                            <span x-show="!jira.testing">Test Connection</span>
+                                            <span x-show="jira.testing">Testing...</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- GitHub Integration -->
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fab fa-github fa-2x me-3"></i>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">GitHub Integration</h6>
+                                    <div class="d-flex align-items-center">
+                                        <span class="status-indicator me-2" :class="github.status + '-status'"></span>
+                                        <small class="text-muted" x-text="github.statusText"></small>
+                                    </div>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" x-model="github.enabled" id="githubEnabled">
+                                    <label class="form-check-label" for="githubEnabled">Enabled</label>
+                                </div>
+                            </div>
+                            
+                            <div x-show="github.enabled" class="border rounded p-3 bg-light">
+                                <div class="row g-3">
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Organization/Username</label>
+                                        <input type="text" class="form-control" x-model="github.org" placeholder="company-org">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Personal Access Token</label>
+                                        <input type="password" class="form-control" x-model="github.token" placeholder="ghp_...">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Default Repository</label>
+                                        <input type="text" class="form-control" x-model="github.defaultRepo" placeholder="repository-name">
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Branch Filter</label>
+                                        <input type="text" class="form-control" x-model="github.branchFilter" placeholder="main,develop">
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" @click="testGitHubConnection()" :disabled="github.testing">
+                                            <i class="fas fa-vial me-1" :class="{ 'fa-spin': github.testing }"></i>
+                                            <span x-show="!github.testing">Test Connection</span>
+                                            <span x-show="github.testing">Testing...</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Data Retention -->
+                <div class="card settings-card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            <i class="fas fa-clock text-primary me-2"></i>Data Retention
+                        </h5>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <label for="{{ settings_form.data_retention_days.id_for_label }}" class="form-label">Data Retention Period</label>
+                                {{ settings_form.data_retention_days }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card settings-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <button type="submit" class="btn btn-pulze btn-lg" id="saveSettingsBtn">
+                                    <i class="fas fa-save"></i> Save Settings
+                                </button>
+                                <a href="{% url 'dashboard:dashboard' %}" class="btn btn-outline-secondary btn-lg ms-2">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+    </form>
+</div>
+
+<script>
+
+// Integration Settings Alpine.js Component
+function integrationSettings() {
+    return {
+        // Jira integration state
+        jira: {
+            enabled: true,
+            status: 'offline',
+            statusText: 'Not configured',
+            serverUrl: '',
+            apiToken: '',
+            username: '',
+            projectKey: '',
+            testing: false
+        },
+        
+        // GitHub integration state
+        github: {
+            enabled: true,
+            status: 'offline',
+            statusText: 'Not configured',
+            org: '',
+            token: '',
+            defaultRepo: '',
+            branchFilter: 'main,develop',
+            testing: false
+        },
+
+        init() {
+            // Load existing configuration from server
+            this.loadIntegrationSettings();
+        },
+
+        async loadIntegrationSettings() {
+            try {
+                const response = await fetch('/integrations/api/status/');
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Update Jira settings
+                    if (data.jira) {
+                        this.jira.enabled = data.jira.enabled || false;
+                        this.jira.status = data.jira.connected ? 'connected' : 'offline';
+                        this.jira.statusText = data.jira.connected ? 'Connected' : 'Not configured';
+                        this.jira.serverUrl = data.jira.serverUrl || '';
+                        this.jira.username = data.jira.username || '';
+                        this.jira.projectKey = data.jira.projectKey || '';
+                    }
+                    
+                    // Update GitHub settings
+                    if (data.github) {
+                        this.github.enabled = data.github.enabled || false;
+                        this.github.status = data.github.connected ? 'connected' : 'offline';
+                        this.github.statusText = data.github.connected ? 'Connected' : 'Not configured';
+                        this.github.org = data.github.org || '';
+                        this.github.defaultRepo = data.github.defaultRepo || '';
+                        this.github.branchFilter = data.github.branchFilter || 'main,develop';
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to load integration settings:', error);
+            }
+        },
+
+        async testJiraConnection() {
+            if (!this.jira.serverUrl || !this.jira.apiToken || !this.jira.username) {
+                alert('Please fill in all required Jira fields before testing.');
+                return;
+            }
+
+            this.jira.testing = true;
+            this.jira.status = 'testing';
+            this.jira.statusText = 'Testing connection...';
+
+            try {
+                const response = await fetch('/integrations/api/jira/user-issues/', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success !== false) {
+                    this.jira.status = 'connected';
+                    this.jira.statusText = 'Connection successful!';
+                    alert('Jira connection test successful! Found ' + (data.issues ? data.issues.length : 'some') + ' issues.');
+                } else {
+                    this.jira.status = 'disconnected';
+                    this.jira.statusText = 'Connection failed';
+                    alert('Jira connection test failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                this.jira.status = 'disconnected';
+                this.jira.statusText = 'Connection failed';
+                alert('Jira connection test failed: ' + error.message);
+            } finally {
+                this.jira.testing = false;
+            }
+        },
+
+        async testGitHubConnection() {
+            if (!this.github.org || !this.github.token) {
+                alert('Please fill in organization and token before testing.');
+                return;
+            }
+
+            this.github.testing = true;
+            this.github.status = 'testing';
+            this.github.statusText = 'Testing connection...';
+
+            try {
+                const response = await fetch('/integrations/api/github/test/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({
+                        org: this.github.org,
+                        token: this.github.token,
+                        defaultRepo: this.github.defaultRepo,
+                        test: true
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    this.github.status = 'connected';
+                    this.github.statusText = 'Connection successful!';
+                    alert('GitHub connection test successful!');
+                } else {
+                    this.github.status = 'disconnected';
+                    this.github.statusText = 'Connection failed';
+                    alert('GitHub connection test failed: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                this.github.status = 'disconnected';
+                this.github.statusText = 'Connection failed';
+                alert('GitHub connection test failed: ' + error.message);
+            } finally {
+                this.github.testing = false;
+            }
+        },
+
+        async saveIntegrations() {
+            try {
+                const response = await fetch('/user_settings/save-integrations/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                    body: JSON.stringify({
+                        jira: this.jira,
+                        github: this.github
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    return true;
+                } else {
+                    alert('Failed to save integration settings: ' + (data.error || 'Unknown error'));
+                    return false;
+                }
+            } catch (error) {
+                alert('Failed to save integration settings: ' + error.message);
+                return false;
+            }
+        }
+    };
+}
+
+// Handle form submission to include integration settings
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    
+    if (form && saveBtn) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Save integration settings first
+            if (window.Alpine && window.Alpine.store && window.Alpine.store('integrationSettings')) {
+                const integrationComponent = window.Alpine.store('integrationSettings');
+                const success = await integrationComponent.saveIntegrations();
+                if (!success) {
+                    return; // Don't submit form if integration save failed
+                }
+            }
+            
+            // If we reach here, submit the form normally
+            this.submit();
+        });
+    }
+});
+</script>
+{% endblock %}

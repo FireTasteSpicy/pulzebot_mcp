@@ -1,0 +1,11 @@
+/* Standup form page styles */
+.standup-container { max-width: 900px; margin: 0 auto; }
+.recording-visualizer { width: 100%; height: 60px; background: linear-gradient(45deg, var(--gray-100), var(--gray-200)); border-radius: var(--border-radius); position: relative; overflow: hidden; }
+.recording-wave { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 2px; background: var(--danger-color); animation: recordingPulse 1.5s ease-in-out infinite; }
+@keyframes recordingPulse { 0%, 100% { transform: translate(-50%, -50%) scaleY(1); } 50% { transform: translate(-50%, -50%) scaleY(10); } }
+.smart-suggestions { background: var(--pulze-gradient); color: white; border-radius: var(--border-radius-lg); padding: 20px; margin-bottom: 20px; }
+.suggestion-chip { display: inline-block; background: rgba(255, 255, 255, 0.2); padding: 8px 16px; margin: 4px; border-radius: 20px; cursor: pointer; transition: all 0.2s ease; }
+.suggestion-chip:hover { background: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
+.auto-save-indicator { position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 12px 20px; border-radius: 25px; font-size: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); z-index: 1000; opacity: 0; transform: translateX(100%); transition: all 0.3s ease; }
+.auto-save-indicator.show { opacity: 1; transform: translateX(0); }
+.analytics-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; padding: 30px; margin-bottom: 30px; text-align: center; }

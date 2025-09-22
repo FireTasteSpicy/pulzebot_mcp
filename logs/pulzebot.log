@@ -1,0 +1,141 @@
+WARNING 2025-09-22 07:17:45,595 log 580130 132130857394176 Bad Request: /api/v1/ai/process/
+ERROR 2025-09-22 07:17:52,886 log 580130 132130857394176 Internal Server Error: /api/v1/ai/process/
+WARNING 2025-09-22 07:17:53,136 log 580130 132130857394176 Bad Request: /api/v1/ai/standup/parse/
+WARNING 2025-09-22 07:17:53,372 log 580130 132130857394176 Bad Request: /api/v1/ai/standup/parse/
+WARNING 2025-09-22 07:17:53,597 log 580130 132130857394176 Bad Request: /api/v1/ai/standup/parse/
+INFO 2025-09-22 07:17:52,256 parsing_service 580130 132130857394176 Successfully parsed standup transcription into 3 sections
+WARNING 2025-09-22 07:17:52,484 log 580130 132130857394176 Bad Request: /api/v1/ai/speech/transcribe/
+INFO 2025-09-22 07:17:52,747 parsing_service 580130 132130857394176 Successfully parsed standup transcription into 1 sections
+INFO 2025-09-22 07:17:52,749 parsing_service 580130 132130857394176 Successfully parsed standup transcription into 3 sections
+INFO 2025-09-22 07:17:55,140 views 580130 132130857394176 User testuser logged out
+INFO 2025-09-22 07:17:55,720 views 580130 132130857394176 User testuser logged out
+INFO 2025-09-22 07:17:57,229 views 580130 132130857394176 Database health check passed
+INFO 2025-09-22 07:17:57,230 views 580130 132130857394176 Cache health check passed
+WARNING 2025-09-22 07:17:59,205 log 580130 132130857394176 Not Found: /dashboard/project/1/
+WARNING 2025-09-22 07:18:02,174 log 580130 132130857394176 Not Found: /integrations/status/
+WARNING 2025-09-22 07:18:02,432 log 580130 132130857394176 Not Found: /integrations/jira/user-issues/
+INFO 2025-09-22 07:18:03,739 services 580130 132130857394176 Standup reminder processed for testuser - Email: True, Notification: True
+INFO 2025-09-22 07:18:03,739 services 580130 132130857394176 Standup reminder sent to testuser
+WARNING 2025-09-22 07:21:08,830 log 581843 125742683582464 Bad Request: /api/v1/ai/process/
+ERROR 2025-09-22 07:21:13,875 log 581843 125742683582464 Internal Server Error: /api/v1/ai/process/
+WARNING 2025-09-22 07:21:14,363 log 581843 125742683582464 Bad Request: /api/v1/ai/standup/parse/
+WARNING 2025-09-22 07:21:14,586 log 581843 125742683582464 Bad Request: /api/v1/ai/standup/parse/
+WARNING 2025-09-22 07:21:14,808 log 581843 125742683582464 Bad Request: /api/v1/ai/standup/parse/
+INFO 2025-09-22 07:21:15,024 parsing_service 581843 125742683582464 Successfully parsed standup transcription into 3 sections
+WARNING 2025-09-22 07:21:15,244 log 581843 125742683582464 Bad Request: /api/v1/ai/speech/transcribe/
+INFO 2025-09-22 07:21:15,429 parsing_service 581843 125742683582464 Successfully parsed standup transcription into 1 sections
+INFO 2025-09-22 07:21:15,429 parsing_service 581843 125742683582464 Successfully parsed standup transcription into 3 sections
+INFO 2025-09-22 07:21:17,737 views 581843 125742683582464 User testuser logged out
+INFO 2025-09-22 07:21:18,314 views 581843 125742683582464 User testuser logged out
+INFO 2025-09-22 07:21:19,852 views 581843 125742683582464 Database health check passed
+INFO 2025-09-22 07:21:19,853 views 581843 125742683582464 Cache health check passed
+WARNING 2025-09-22 07:21:22,065 log 581843 125742683582464 Not Found: /dashboard/project/1/
+WARNING 2025-09-22 07:21:24,970 log 581843 125742683582464 Not Found: /integrations/status/
+WARNING 2025-09-22 07:21:25,227 log 581843 125742683582464 Not Found: /integrations/jira/user-issues/
+INFO 2025-09-22 07:21:26,401 services 581843 125742683582464 Standup reminder processed for testuser - Email: True, Notification: True
+INFO 2025-09-22 07:21:26,401 services 581843 125742683582464 Standup reminder sent to testuser
+INFO 2025-09-22 07:35:01,365 autoreload 587796 139472999505920 Watching for file changes with StatReloader
+INFO 2025-09-22 07:35:49,097 autoreload 587796 139472999505920 /home/dc/school/pulsebot_mcp/standup/views.py changed, reloading.
+INFO 2025-09-22 07:35:49,630 autoreload 588131 127347397505024 Watching for file changes with StatReloader
+INFO 2025-09-22 07:38:20,266 autoreload 589345 130749001445376 Watching for file changes with StatReloader
+INFO 2025-09-22 07:39:00,009 autoreload 588131 127347397505024 /home/dc/school/pulsebot_mcp/standup/views.py changed, reloading.
+INFO 2025-09-22 07:39:01,563 autoreload 589750 129004263555072 Watching for file changes with StatReloader
+INFO 2025-09-22 07:42:45,358 basehttp 589750 128999100831296 "GET /standup/form/ HTTP/1.1" 200 21147
+INFO 2025-09-22 07:42:45,484 basehttp 589750 128999100831296 "GET /static/css/pulze-shared.css HTTP/1.1" 304 0
+INFO 2025-09-22 07:45:27,201 autoreload 589750 129004263555072 /home/dc/school/pulsebot_mcp/integrations/services.py changed, reloading.
+INFO 2025-09-22 07:45:28,969 autoreload 592413 135238582591488 Watching for file changes with StatReloader
+INFO 2025-09-22 07:49:49,377 autoreload 592413 135238582591488 /home/dc/school/pulsebot_mcp/user_settings/privacy_service.py changed, reloading.
+INFO 2025-09-22 07:49:52,360 autoreload 595626 135692573663232 Watching for file changes with StatReloader
+INFO 2025-09-22 07:50:12,494 autoreload 595626 135692573663232 /home/dc/school/pulsebot_mcp/ai_processing/summary_service.py changed, reloading.
+INFO 2025-09-22 07:50:12,153 autoreload 595932 134461640454144 Watching for file changes with StatReloader
+INFO 2025-09-22 07:50:21,712 autoreload 595932 134461640454144 /home/dc/school/pulsebot_mcp/user_settings/privacy_service.py changed, reloading.
+INFO 2025-09-22 07:50:23,031 autoreload 596074 130987093164032 Watching for file changes with StatReloader
+INFO 2025-09-22 07:51:12,266 autoreload 596074 130987093164032 /home/dc/school/pulsebot_mcp/ai_processing/summary_service.py changed, reloading.
+INFO 2025-09-22 07:51:14,261 autoreload 596772 139210872709120 Watching for file changes with StatReloader
+INFO 2025-09-22 07:51:44,176 autoreload 596772 139210872709120 /home/dc/school/pulsebot_mcp/ai_processing/summary_service.py changed, reloading.
+INFO 2025-09-22 07:51:43,860 autoreload 597089 135859652812800 Watching for file changes with StatReloader
+INFO 2025-09-22 07:52:27,296 autoreload 597089 135859652812800 /home/dc/school/pulsebot_mcp/dashboard/services.py changed, reloading.
+INFO 2025-09-22 07:52:28,615 autoreload 597559 123133211553792 Watching for file changes with StatReloader
+INFO 2025-09-22 07:52:37,910 autoreload 597559 123133211553792 /home/dc/school/pulsebot_mcp/dashboard/services.py changed, reloading.
+INFO 2025-09-22 07:52:39,413 autoreload 597746 130504760762368 Watching for file changes with StatReloader
+INFO 2025-09-22 07:52:54,235 autoreload 597746 130504760762368 /home/dc/school/pulsebot_mcp/ai_processing/services.py changed, reloading.
+INFO 2025-09-22 07:52:55,473 autoreload 597960 131017468350464 Watching for file changes with StatReloader
+INFO 2025-09-22 07:53:41,546 autoreload 597960 131017468350464 /home/dc/school/pulsebot_mcp/ai_processing/summary_service.py changed, reloading.
+INFO 2025-09-22 07:53:42,782 autoreload 598395 130569329729536 Watching for file changes with StatReloader
+INFO 2025-09-22 07:53:51,445 autoreload 598395 130569329729536 /home/dc/school/pulsebot_mcp/ai_processing/summary_service.py changed, reloading.
+INFO 2025-09-22 07:53:52,757 autoreload 598522 126498440527872 Watching for file changes with StatReloader
+INFO 2025-09-22 07:53:59,225 autoreload 598522 126498440527872 /home/dc/school/pulsebot_mcp/ai_processing/summary_service.py changed, reloading.
+INFO 2025-09-22 07:54:00,496 autoreload 598711 124537852567552 Watching for file changes with StatReloader
+INFO 2025-09-22 07:54:47,515 autoreload 598711 124537852567552 /home/dc/school/pulsebot_mcp/authentication/views.py changed, reloading.
+INFO 2025-09-22 07:54:48,831 autoreload 599088 138697236574208 Watching for file changes with StatReloader
+INFO 2025-09-22 08:01:43,829 autoreload 599088 138697236574208 /home/dc/school/pulsebot_mcp/dashboard/services.py changed, reloading.
+INFO 2025-09-22 08:01:45,331 autoreload 602834 128984505548800 Watching for file changes with StatReloader
+INFO 2025-09-22 08:01:59,589 autoreload 602834 128984505548800 /home/dc/school/pulsebot_mcp/dashboard/services.py changed, reloading.
+INFO 2025-09-22 08:02:00,193 autoreload 603086 124725176340480 Watching for file changes with StatReloader
+INFO 2025-09-22 08:02:09,971 autoreload 603086 124725176340480 /home/dc/school/pulsebot_mcp/dashboard/views.py changed, reloading.
+INFO 2025-09-22 08:02:10,956 autoreload 603202 132832854638592 Watching for file changes with StatReloader
+INFO 2025-09-22 08:02:19,051 basehttp 603202 132827695076928 "GET /settings/ HTTP/1.1" 200 30593
+INFO 2025-09-22 08:02:19,165 basehttp 603202 132827695076928 "GET /static/css/pulze-shared.css HTTP/1.1" 304 0
+INFO 2025-09-22 08:02:19,167 basehttp 603202 132827683538496 "GET /static/css/user_settings.css HTTP/1.1" 304 0
+INFO 2025-09-22 08:02:19,521 basehttp 603202 132827683538496 "GET /integrations/api/status/ HTTP/1.1" 200 2086
+INFO 2025-09-22 08:02:50,596 autoreload 603202 132832854638592 /home/dc/school/pulsebot_mcp/ai_processing/orchestration_service.py changed, reloading.
+INFO 2025-09-22 08:02:52,045 autoreload 603695 131603880247296 Watching for file changes with StatReloader
+INFO 2025-09-22 08:15:47,891 autoreload 603695 131603880247296 /home/dc/school/pulsebot_mcp/authentication/urls.py changed, reloading.
+INFO 2025-09-22 08:15:50,489 autoreload 609870 128902186348544 Watching for file changes with StatReloader
+INFO 2025-09-22 08:18:13,205 autoreload 609870 128902186348544 /home/dc/school/pulsebot_mcp/user_settings/views.py changed, reloading.
+INFO 2025-09-22 08:18:14,242 autoreload 611549 129983531642880 Watching for file changes with StatReloader
+INFO 2025-09-22 08:18:49,102 autoreload 611549 129983531642880 /home/dc/school/pulsebot_mcp/dashboard/services.py changed, reloading.
+INFO 2025-09-22 08:18:50,948 autoreload 611828 127902299930624 Watching for file changes with StatReloader
+INFO 2025-09-22 08:36:40,727 basehttp 611828 127897136584256 "GET /dashboard/ HTTP/1.1" 200 41968
+INFO 2025-09-22 08:36:40,868 basehttp 611828 127897136584256 "GET /static/css/pulze-shared.css HTTP/1.1" 200 13302
+INFO 2025-09-22 08:43:25,434 autoreload 611828 127902299930624 /home/dc/school/pulsebot_mcp/integrations/views.py changed, reloading.
+INFO 2025-09-22 08:43:28,240 autoreload 621859 139924796964864 Watching for file changes with StatReloader
+INFO 2025-09-22 08:49:38,185 autoreload 621859 139924796964864 /home/dc/school/pulsebot_mcp/dashboard/models.py changed, reloading.
+INFO 2025-09-22 08:49:39,827 autoreload 624899 125409459576832 Watching for file changes with StatReloader
+INFO 2025-09-22 08:49:44,268 autoreload 624899 125409459576832 /home/dc/school/pulsebot_mcp/dashboard/models.py changed, reloading.
+INFO 2025-09-22 08:49:45,753 autoreload 624995 140415026507776 Watching for file changes with StatReloader
+INFO 2025-09-22 08:54:49,267 autoreload 627359 132012368732160 Watching for file changes with StatReloader
+INFO 2025-09-22 08:54:56,881 basehttp 624995 140409863198272 "GET /?id=8c6efc98-de2a-441b-a340-8a0467927b6d&vscodeBrowserReqId=1758531296995 HTTP/1.1" 302 0
+INFO 2025-09-22 08:54:57,086 basehttp 624995 140409863198272 "GET /auth/login/ HTTP/1.1" 200 6839
+INFO 2025-09-22 09:09:48,277 basehttp 624995 140409843267136 "GET /dashboard/ HTTP/1.1" 200 41968
+INFO 2025-09-22 09:09:48,327 basehttp 624995 140409843267136 "GET /static/css/pulze-shared.css HTTP/1.1" 200 13302
+INFO 2025-09-22 09:10:02,196 basehttp 624995 140409863198272 "GET /?id=8c6efc98-de2a-441b-a340-8a0467927b6d&vscodeBrowserReqId=1758532201100 HTTP/1.1" 302 0
+INFO 2025-09-22 09:10:02,201 basehttp 624995 140409863198272 "GET /auth/login/ HTTP/1.1" 200 6839
+INFO 2025-09-22 09:11:57,823 autoreload 634963 128133289152512 Watching for file changes with StatReloader
+ERROR 2025-09-22 09:12:27,099 exception 635276 123311675863040 Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/home/dc/.local/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/dc/.local/lib/python3.10/site-packages/django/utils/deprecation.py", line 133, in __call__
+    response = self.process_request(request)
+  File "/home/dc/.local/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/home/dc/.local/lib/python3.10/site-packages/django/http/request.py", line 151, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'testserver'. You may need to add 'testserver' to ALLOWED_HOSTS.
+WARNING 2025-09-22 09:12:31,414 log 635276 123311675863040 Bad Request: /api/v1/ai/standup/parse/
+INFO 2025-09-22 09:14:48,582 parsing_service 636214 140237770821632 Successfully parsed standup transcription into 2 sections
+INFO 2025-09-22 09:29:58,165 autoreload 624995 140415026507776 /home/dc/school/pulsebot_mcp/ai_processing/sentiment_service.py changed, reloading.
+INFO 2025-09-22 09:30:01,520 autoreload 642839 130915219050496 Watching for file changes with StatReloader
+INFO 2025-09-22 09:45:15,769 autoreload 642839 130915219050496 /home/dc/school/pulsebot_mcp/integrations/services.py changed, reloading.
+INFO 2025-09-22 09:45:17,703 autoreload 651717 134613211344896 Watching for file changes with StatReloader
+INFO 2025-09-22 10:00:13,890 autoreload 651717 134613211344896 /home/dc/school/pulsebot_mcp/config/settings.py changed, reloading.
+INFO 2025-09-22 10:00:13,670 autoreload 660248 128918201126912 Watching for file changes with StatReloader
+WARNING 2025-09-22 11:31:24,892 log 699287 130431718490112 Bad Request: /api/v1/ai/process/
+ERROR 2025-09-22 11:31:32,264 log 699287 130431718490112 Internal Server Error: /api/v1/ai/process/
+WARNING 2025-09-22 11:31:32,506 log 699287 130431718490112 Bad Request: /api/v1/ai/standup/parse/
+WARNING 2025-09-22 11:31:32,747 log 699287 130431718490112 Bad Request: /api/v1/ai/standup/parse/
+WARNING 2025-09-22 11:31:32,986 log 699287 130431718490112 Bad Request: /api/v1/ai/standup/parse/
+INFO 2025-09-22 11:31:33,223 parsing_service 699287 130431718490112 Successfully parsed standup transcription into 3 sections
+WARNING 2025-09-22 11:31:33,454 log 699287 130431718490112 Bad Request: /api/v1/ai/speech/transcribe/
+INFO 2025-09-22 11:31:33,653 parsing_service 699287 130431718490112 Successfully parsed standup transcription into 1 sections
+INFO 2025-09-22 11:31:33,654 parsing_service 699287 130431718490112 Successfully parsed standup transcription into 3 sections
+INFO 2025-09-22 11:31:36,185 views 699287 130431718490112 User testuser logged out
+INFO 2025-09-22 11:31:36,813 views 699287 130431718490112 User testuser logged out
+INFO 2025-09-22 11:31:38,421 views 699287 130431718490112 Database health check passed
+INFO 2025-09-22 11:31:38,422 views 699287 130431718490112 Cache health check passed
+WARNING 2025-09-22 11:31:40,535 log 699287 130431718490112 Not Found: /dashboard/project/1/
+WARNING 2025-09-22 11:31:43,587 log 699287 130431718490112 Not Found: /integrations/status/
+WARNING 2025-09-22 11:31:43,832 log 699287 130431718490112 Not Found: /integrations/jira/user-issues/
+INFO 2025-09-22 11:31:45,017 services 699287 130431718490112 Standup reminder processed for testuser - Email: True, Notification: True
+INFO 2025-09-22 11:31:45,017 services 699287 130431718490112 Standup reminder sent to testuser

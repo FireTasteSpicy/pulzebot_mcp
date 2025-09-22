@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Manager Dashboard - PulzeBot{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 bg-light">
+    <!-- Manager Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container py-4 text-center">
+            <h1 class="h4 mb-0">Manager Dashboard</h1>
+            <small class="text-white-50">Leadership Insights & Team Analytics</small>
+        </div>
+    </header>
+
+    {% if access_error %}
+    <div class="container py-4">
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+            <i class="fas fa-exclamation-triangle text-red-500 text-3xl mb-4"></i>
+            <h3 class="text-lg font-semibold text-red-800 mb-2">Access Configuration Required</h3>
+            <p class="text-red-700">Please contact your administrator to configure your management access.</p>
+        </div>
+    </div>
+    {% else %}
+
+    <!-- Critical Alerts Banner -->
+    {% if critical_alerts_count > 0 %}
+    <div class="bg-red-50 border-l-4 border-red-400 p-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-red-700">
+                        <strong>{{ critical_alerts_count }} critical alert{{ critical_alerts_count|pluralize }}</strong> requiring immediate attention.
+                        <a href="#alerts-section" class="font-medium underline">View details below</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        
+        <!-- Executive Summary Cards -->
+        <div class="row g-3 mb-4">
+            <!-- Total Sessions -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card metric-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3 d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:rgba(59,130,246,.15);border-radius:.5rem;">
+                            <i class="fas fa-chart-line text-primary"></i>
+                        </div>
+                        <div>
+                            <div class="small text-muted">Total Standups (Today)</div>
+                            <div class="h5 mb-0">{{ team_health_summary.total_sessions|default:0 }}</div>
+                            <div class="small text-muted">{{ team_health_summary.participation_rate|default:0|floatformat:1 }}% participation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Health Score -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card metric-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3 d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:rgba(25,135,84,.15);border-radius:.5rem;">
+                            <i class="fas fa-heart text-success"></i>
+                        </div>
+                        <div>
+                            <div class="small text-muted">Team Health</div>
+                            <div class="h5 mb-0">{{ team_health_summary.sentiment_score|default:7|floatformat:1 }}/10</div>
+                            <div class="small text-muted">Daily Mood</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Blockers -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card metric-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3 d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:rgba(255,193,7,.15);border-radius:.5rem;">
+                            <i class="fas fa-exclamation-triangle text-warning"></i>
+                        </div>
+                        <div>
+                            <div class="small text-muted">Active Blockers</div>
+                            <div class="h5 mb-0">{{ team_health_summary.active_blockers|default:0 }}</div>
+                            <div class="small text-muted">Total requiring attention</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Overview -->
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="card metric-card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-3 d-flex align-items-center justify-content-center" style="width:48px;height:48px;background:rgba(147,51,234,.15);border-radius:.5rem;">
+                            <i class="fas fa-project-diagram" style="color:#6f42c1;"></i>
+                        </div>
+                        <div>
+                            <div class="small text-muted">Active Projects</div>
+                            <div class="h5 mb-0">{{ team_health_summary.projects_count|default:0 }}</div>
+                            <div class="small text-muted">Under management</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Performance Overview -->
+        {% if team_comparison and team_comparison|length > 1 %}
+        <div class="mb-4">
+            <div class="card metric-card shadow-sm">
+                <div class="card-header">
+                    <h3 class="h6 mb-1">Team Performance Comparison</h3>
+                    <small class="text-muted">Health scores and key metrics across your teams</small>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Project</th>
+                                    <th>Team Size</th>
+                                    <th>Health Score</th>
+                                    <th>Sentiment</th>
+                                    <th>Blocker Rate</th>
+                                    <th>Sessions (14d)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for team in team_comparison %}
+                                <tr>
+                                    <td class="fw-medium">{{ team.project_name }}</td>
+                                    <td>{{ team.team_size }} members</td>
+                                    <td>
+                                        <span class="fw-semibold {% if team.health_score >= 80 %}health-score-excellent{% elif team.health_score >= 65 %}health-score-good{% elif team.health_score >= 50 %}health-score-warning{% else %}health-score-poor{% endif %}">
+                                            {{ team.health_score|floatformat:1 }}/100
+                                        </span>
+                                    </td>
+                                    <td>{{ team.sentiment_score|floatformat:1 }}/10</td>
+                                    <td>{{ team.blocker_rate|floatformat:1 }}%</td>
+                                    <td>{{ team.sessions_count }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Active Alerts Section -->
+        <div id="alerts-section" class="mb-4">
+            <div class="card metric-card shadow-sm">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <div>
+                        <h3 class="h6 mb-1">Active Health Alerts</h3>
+                        <small class="text-muted">Early warning system for team health issues</small>
+                    </div>
+                    <div class="small text-muted">
+                        {{ active_alerts.count }} active alert{{ active_alerts.count|pluralize }}
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if active_alerts %}
+                        <div class="vstack gap-3">
+                            {% for alert in active_alerts|slice:":10" %}
+                            <div class="border rounded p-3 alert-{{ alert.severity }}">
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div class="flex-fill">
+                                        <div class="d-flex align-items-center mb-2 gap-2">
+                                            <span class="badge {% if alert.severity == 'critical' %}bg-danger-subtle text-danger{% elif alert.severity == 'high' %}bg-warning-subtle text-warning{% elif alert.severity == 'medium' %}bg-warning-subtle text-warning{% else %}bg-secondary-subtle text-secondary{% endif %}">
+                                                {{ alert.get_severity_display }}
+                                            </span>
+                                            <span class="small text-muted">{{ alert.project.name }}</span>
+                                            <span class="small text-muted">{{ alert.created_at|timesince }} ago</span>
+                                        </div>
+                                        <h4 class="h6 mb-1">{{ alert.title }}</h4>
+                                        <p class="small mb-2">{{ alert.description }}</p>
+                                        {% if alert.team_member %}
+                                        <p class="small text-muted mb-0">
+                                            <i class="fas fa-user me-1"></i>Affects: {{ alert.team_member.user.username }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="ms-3 d-flex gap-2">
+                                        <button class="btn btn-sm btn-outline-primary" data-action="acknowledge" data-alert-id="{{ alert.id }}">Acknowledge</button>
+                                        <button class="btn btn-sm btn-outline-success" data-action="resolve" data-alert-id="{{ alert.id }}">Resolve</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-check-circle text-success fs-2 mb-2 d-block"></i>
+                            <p class="fw-medium mb-0">All Clear!</p>
+                            <p class="mb-0">No active health alerts for your teams.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Critical Metrics Requiring Attention -->
+        {% if critical_metrics %}
+        <div class="mb-4">
+            <div class="card metric-card shadow-sm">
+                <div class="card-header">
+                    <h3 class="h6 mb-1">Metrics Requiring Attention</h3>
+                    <small class="text-muted">Concerning trends identified in the last 7 days</small>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        {% for metric in critical_metrics %}
+                        <div class="col-12 col-md-6">
+                            <div class="rounded border p-3 {% if metric.severity == 'high' %}bg-danger-subtle border-danger{% else %}bg-warning-subtle border-warning{% endif %}">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h4 class="h6 mb-1">{{ metric.project }}</h4>
+                                        <p class="small mb-1">{{ metric.description }}</p>
+                                        <p class="small text-muted mb-0">Value: {{ metric.value }}</p>
+                                    </div>
+                                    <span class="badge {% if metric.severity == 'high' %}bg-danger-subtle text-danger{% else %}bg-warning-subtle text-warning{% endif %}">{{ metric.severity|capfirst }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Quick Actions -->
+
+    </div>
+    {% endif %}
+</div>
+
+<script defer src="{% static 'js/manager_dashboard.js' %}"></script>
+{% endblock %}

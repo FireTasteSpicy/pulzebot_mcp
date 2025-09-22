@@ -1,0 +1,180 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Submit Daily Standup - PulzeBot{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/standup.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 gradient-bg" x-data="standupFormApp()">
+    <div class="container py-5">
+        <div class="mx-auto" style="max-width: 720px;">
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h1 class="display-6 text-white mb-2">Daily Standup</h1>
+                <p class="text-white-50 mb-0">Share your progress and connect with your team</p>
+            </div>
+            
+            <!-- Main Form Card -->
+            <div class="bg-white rounded-4 shadow-lg p-4 p-md-5">
+                <!-- Project Info -->
+                {% if project %}
+                <div class="mb-3 p-3 rounded" style="background: rgba(111,66,193,.08);">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:40px;height:40px;background:#6f42c1;">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0H5m14 0a2 2 0 01-2-2V7"></path>
+                            </svg>
+                        </div>
+                        <div class="ms-3">
+                            <h3 class="h6 mb-0">{{ project.name }}</h3>
+                            <small class="text-muted">{{ project.description|default:"Project workspace" }}</small>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Messages -->
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="mb-3 p-3 rounded border {% if message.tags == 'success' %}border-success bg-success-subtle text-success{% elif message.tags == 'error' %}border-danger bg-danger-subtle text-danger{% else %}border-primary bg-primary-subtle text-primary{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <!-- No Project Warning -->
+                {% if no_project %}
+                <div class="mb-3 p-3 rounded border border-warning bg-warning-subtle">
+                    <div class="d-flex">
+                        <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="small fw-semibold text-warning mb-1">Project Assignment Required</h3>
+                            <p class="small text-warning mb-0">You need to be assigned to a project to submit standup entries. Please contact your administrator.</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Standup Form -->
+                <form method="post" action="{% url 'standup:submit_standup' %}" @submit.prevent="submitStandup">
+                    {% csrf_token %}
+                    
+                    <!-- Yesterday's Work -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <span class="d-inline-flex align-items-center">
+                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                What did you accomplish yesterday?
+                            </span>
+                        </label>
+                        <textarea name="yesterday_work"
+                                  x-model="formData.yesterday_work"
+                                  rows="3"
+                                  class="form-control"
+                                  placeholder="Describe your accomplishments and completed tasks..."
+                                  {% if not project %}disabled{% endif %}></textarea>
+                    </div>
+                    
+                    <!-- Note: Sentiment analysis is now performed automatically using BERT AI -->
+                    
+                    <!-- Today's Plan -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <span class="d-inline-flex align-items-center">
+                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                What will you work on today?
+                            </span>
+                        </label>
+                        <textarea name="today_plan"
+                                  x-model="formData.today_plan"
+                                  rows="3"
+                                  class="form-control"
+                                  placeholder="Describe your goals and planned tasks for today..."
+                                  {% if not project %}disabled{% endif %}></textarea>
+                    </div>
+                    
+                    <!-- Blockers -->
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <span class="d-inline-flex align-items-center">
+                                <svg class="w-4 h-4 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                Any blockers or concerns?
+                            </span>
+                        </label>
+                        <textarea name="blockers"
+                                  x-model="formData.blockers"
+                                  rows="3"
+                                  class="form-control"
+                                  placeholder="Describe any blockers, issues, or support needed..."
+                                  {% if not project %}disabled{% endif %}></textarea>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 pt-3 border-top">
+                        <a href="{% url 'dashboard:dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                        <button type="submit" :disabled="isSubmitting || !isFormValid() {% if not project %}|| true{% endif %}" class="btn btn-primary">
+                            <span x-show="!isSubmitting"><i class="fas fa-paper-plane me-2"></i>Submit Standup</span>
+                            <span x-show="isSubmitting"><i class="fas fa-spinner fa-spin me-2"></i>Submitting...</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Work Items Context (if available) -->
+                {% if work_items %}
+                <div class="mt-4 p-3 bg-light rounded">
+                    <h4 class="h6 mb-2">Recent Work Items</h4>
+                    <div class="vstack gap-2">
+                        {% for item in work_items %}
+                        <div class="d-flex align-items-center small text-muted">
+                            <span class="rounded-circle me-2" style="display:inline-block;width:8px;height:8px;background:#a855f7;"></span>
+                            {{ item.display_name }} - {{ item.title|truncatechars:50 }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function standupFormApp() {
+    return {
+        isSubmitting: false,
+        formData: {
+            yesterday_work: '',
+            today_plan: '',
+            blockers: ''
+        },
+        
+        isFormValid() {
+            return this.formData.yesterday_work.trim() || this.formData.today_plan.trim();
+        },
+        
+        submitStandup() {
+            if (!this.isFormValid()) return;
+            
+            this.isSubmitting = true;
+            
+            // Submit the form normally since we have CSRF token
+            document.querySelector('form').submit();
+        }
+    }
+}
+</script>
+{% endblock %}

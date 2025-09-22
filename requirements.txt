@@ -1,0 +1,53 @@
+# Core Django Framework
+Django==5.0.2
+djangorestframework==3.14.0
+django-cors-headers==4.3.1
+
+# Database
+psycopg2-binary==2.9.9
+django-environ==0.11.2
+dj-database-url==2.1.0
+
+# AI/ML Dependencies
+openai-whisper==20231117
+transformers==4.36.2
+torch==2.1.2
+google-generativeai==0.8.5
+
+# Audio Processing
+librosa==0.10.1
+soundfile==0.12.1
+# PyAudio==0.2.14  # Commented out - causes issues on Heroku, use web audio instead
+
+# Frontend
+django-htmx==1.17.2
+
+# Additional Dependencies
+pytz==2024.1
+Pillow==10.0.1
+numpy==1.26.4
+scipy==1.11.4
+
+# Development & Testing
+black==23.12.1
+flake8==6.1.0
+isort==5.13.2
+
+# Security
+django-allauth==0.60.1
+django-csp==3.7
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.32.4
+
+# Production Server
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Heroku Deployment
+django-heroku==0.3.1
+
+# Documentation
+sphinx==7.2.6
+sphinx-rtd-theme==2.0.0 
